@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://clc88cqsnslr1"]
+[gd_scene load_steps=6 format=3 uid="uid://clc88cqsnslr1"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_5ealv"]
 [ext_resource type="Texture2D" uid="uid://b42f7gq2w67xj" path="res://Player/player.png" id="1_d6bcn"]
+[ext_resource type="PackedScene" uid="uid://cadx20hc7p06f" path="res://Player/Bullets/Magic_Ball.tscn" id="3_pbqxm"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_dsffm"]
 animations = [{
@@ -18,6 +19,7 @@ animations = [{
 size = Vector2(16, 32)
 
 [node name="Player" type="CharacterBody2D"]
+collision_mask = 13
 script = ExtResource("1_5ealv")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -29,3 +31,5 @@ visible = false
 shape = SubResource("RectangleShape2D_l5myx")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Magic_Ball" parent="." instance=ExtResource("3_pbqxm")]
