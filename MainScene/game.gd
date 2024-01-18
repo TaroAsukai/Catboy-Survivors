@@ -18,6 +18,14 @@ func _process(delta):
 	pass
 
 func spawn_next_wave():
-	var enemy_char = enemy.instantiate()
-	enemy_char.global_position = Vector2(100,100)
-	self.add_child(enemy_char)  # přidá projektil do scény
+	var spawn_positions = [
+		Vector2(100, 100),
+		Vector2(800, 100),
+		Vector2(100, 800),
+		Vector2(800, 800)
+	]
+
+	for pos in spawn_positions:
+		var enemy_char = enemy.instantiate()
+		enemy_char.global_position = pos
+		add_child(enemy_char)
