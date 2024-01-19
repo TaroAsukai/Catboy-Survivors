@@ -4,6 +4,9 @@ var speed = 80
 var HP = 3
 var player = null
 
+var expCrystal = preload("res://Experience/Experience.tscn")
+@export var exp = 1
+
 func _ready():
 	player = get_node("../Player")
 	self.add_to_group("Enemies")
@@ -21,4 +24,8 @@ func get_hit(dmg):
 		HP -= dmg
 	else:
 		player.update_score(20)
+		var newCrystal = expCrystal.instantiate()
+		newCrystal.global_position = global_position
+		newCrystal.experience = exp
+		get_parent().call_deferred("add_child", newCrystal)
 		queue_free()

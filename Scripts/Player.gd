@@ -1,11 +1,22 @@
 extends CharacterBody2D
 
 
+
 var projectile_scene = preload("res://Player/Bullets/Magic_Ball.tscn")
 var melee_scene = preload("res://Player/Melee/melee.tscn")
 var score = 0  # Skóre hráče
+var speed = 200
+
+var exp = 0
+var level = 1
+var expCollected = 0
+
+@onready var expBar = get_node("%ExpBar")
+@onready var levelLabel = get_node("%LevelLabel")
 
 func _ready():
+	set_exp_bar(exp, calculate_experience_cap())
+	
 	# Nastavení časovače
 	var timer = Timer.new()
 	var timer_melee = Timer.new()
@@ -28,7 +39,7 @@ func _ready():
 
 func _physics_process(_delta):
 	var direction = Input.get_vector("moveLeft", "moveRight", "moveUp", "moveDown")
-	velocity = direction * 200
+	velocity = direction * speed
 	move_and_slide()
 	
 
@@ -59,3 +70,45 @@ func slash():
 func update_score(points):
 	score += points
 	$ScoreLabel.text = "Skóre: " + str(score)
+
+
+func _on_grab_area_area_entered(area):
+	if area.is_in_group("loot"):
+		area.target = self
+
+
+func _on_collect_area_area_entered(area):
+	if area.is_in_group("loot"):
+		var expCrystal = area.collect()
+		calculate_experience(expCrystal)
+
+
+func calculate_experience(expCrystal):
+	var expRequired = calculate_experience_cap()
+	expCollected += expCrystal
+	if (exp + expCollected >= expRequired):		#level up
+		expCollected -= expRequired - exp
+		level += 1
+		levelLabel.text = str("level: ", level)
+		exp = 0
+		expRequired = calculate_experience_cap()
+		calculate_experience(0)
+	else:
+		exp += expCollected
+		expCollected = 0
+		
+	set_exp_bar(exp, expRequired)
+
+func calculate_experience_cap():
+	var experience_cap = level
+	if (level < 20):
+		experience_cap = level * 5
+	elif (level < 40):
+		experience_cap = 95 + (level - 19) * 8
+	else:
+		experience_cap = 255 + (level - 39) * 12
+	return experience_cap
+
+func set_exp_bar(set_value = 1, set_max_value = 100):
+	expBar.value = set_value
+	expBar.max_value = set_max_value

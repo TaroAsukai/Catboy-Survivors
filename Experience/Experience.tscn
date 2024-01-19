@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://cx5qo0mnqcpm7"]
+
+[ext_resource type="Script" path="res://Experience/Experience.gd" id="1_c86xy"]
+[ext_resource type="Texture2D" uid="uid://du661pryp0xyr" path="res://Experience/experience.png" id="1_ty17s"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6by6f"]
+radius = 5.09902
+
+[node name="Experience" type="Area2D" groups=["loot"]]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("1_c86xy")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_ty17s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_6by6f")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

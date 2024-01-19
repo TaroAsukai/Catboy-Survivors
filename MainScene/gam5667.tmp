@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=3 uid="uid://vxbmwhkso1xm"]
+
+[ext_resource type="Script" path="res://MainScene/game.gd" id="1_tq32e"]
+[ext_resource type="PackedScene" uid="uid://clc88cqsnslr1" path="res://Player/Player.tscn" id="1_wqf40"]
+[ext_resource type="PackedScene" uid="uid://cljaknh6fvg3h" path="res://Enemy/Enemy.tscn" id="2_lopbj"]
+[ext_resource type="PackedScene" uid="uid://cx5qo0mnqcpm7" path="res://Experience/Experience.tscn" id="4_u6o2y"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1qit0"]
+size = Vector2(7442, 645.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_62ilq"]
+size = Vector2(1040, 3962)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_066ch"]
+size = Vector2(7441, 554.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q2ixe"]
+size = Vector2(985, 3951)
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_tq32e")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -4615.0
+offset_top = -1889.0
+offset_right = 4762.0
+offset_bottom = 2070.0
+
+[node name="Player" parent="." instance=ExtResource("1_wqf40")]
+position = Vector2(619, 303)
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_lopbj")]
+position = Vector2(363, 496)
+
+[node name="CharacterBody2D2" parent="." instance=ExtResource("2_lopbj")]
+position = Vector2(773, 215)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(-4615, -1889)
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(4729, 323.25)
+shape = SubResource("RectangleShape2D_1qit0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(510, 1971)
+shape = SubResource("RectangleShape2D_62ilq")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(4723.5, 3686.25)
+shape = SubResource("RectangleShape2D_066ch")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(5248, 52)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2(-983.5, 41.5)
+shape = SubResource("RectangleShape2D_q2ixe")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
+
+[node name="Experience" parent="." instance=ExtResource("4_u6o2y")]
+position = Vector2(532, 290)
+experience = 50
