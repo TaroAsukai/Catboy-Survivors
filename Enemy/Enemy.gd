@@ -13,7 +13,9 @@ func _physics_process(delta):
 	if player != null:
 		var direction = (player.global_position - global_position).normalized()
 		velocity = direction * speed
-		collission = move_and_collide(velocity * delta)
+		move_and_slide()
+		for i in get_slide_collision_count():
+			var collision = get_slide_collision(i)
 	
 	
 func get_hit(dmg):
