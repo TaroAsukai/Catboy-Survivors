@@ -10,8 +10,8 @@ func _ready():
 	timer.one_shot = false
 	timer.connect("timeout", _melee_Timeout)
 	timer.start()
-	connect("area_entered", _on_Area_entered)
-	connect("area_exited", _on_Area_exited)
+	
+	connect("body_entered", _on_Body_entered)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -21,12 +21,11 @@ func _process(delta):
 func _melee_Timeout():
 	call_deferred("queue_free")
 	
-func _on_Area_entered(area):
+func _on_Body_entered(body):
 	# Zde můžete implementovat logiku, co se stane, když něco vstoupí do oblasti zbraně
-	print("yop")
-	if area.is_in_group("Enemies"):
+	if body.is_in_group("Enemies"):
 		# Udělit poškození nepříteli
-		print("Hit an enemy")
+		body.get_hit(2)
 	else:
 		print("ye")
 

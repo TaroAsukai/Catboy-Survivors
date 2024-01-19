@@ -11,6 +11,7 @@ func _ready():
 	timer.one_shot = false
 	timer.connect("timeout", spawn_next_wave)
 	add_child(timer)
+	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

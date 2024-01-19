@@ -1,7 +1,7 @@
 extends CharacterBody2D  # nebo KinematicBody2D
 
 var speed = 80
-var HP = 2
+var HP = 3
 var player = null
 
 func _ready():
@@ -20,4 +20,5 @@ func get_hit(dmg):
 	if HP - dmg >= 1:
 		HP -= dmg
 	else:
+		player.update_score(20)
 		queue_free()
