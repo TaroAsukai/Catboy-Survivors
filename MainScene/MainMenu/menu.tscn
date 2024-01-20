@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3 uid="uid://dx3bpgqtfaow0"]
+
+[ext_resource type="Script" path="res://MainScene/MainMenu/menu.gd" id="1_csd6h"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_chrsg"]
+font_size = 28
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+script = ExtResource("1_csd6h")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -50.5
+offset_right = 64.0
+offset_bottom = 50.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Play"
+
+[node name="UselessButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "UselessButton
+"
+
+[node name="ExitButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Exit"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -113.5
+offset_top = 182.0
+offset_right = 113.5
+offset_bottom = 221.0
+grow_horizontal = 2
+text = "Catboy Survivors"
+label_settings = SubResource("LabelSettings_chrsg")
+
+[connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

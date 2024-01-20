@@ -4,9 +4,19 @@ extends CharacterBody2D
 
 var projectile_scene = preload("res://Player/Bullets/Magic_Ball.tscn")
 var melee_scene = preload("res://Player/Melee/melee.tscn")
+var magicBall2 = preload("res://Player/Attack/MagicBall2/MagicBall2.tscn")
 var score = 0  # Skóre hráče
 var speed = 200
 
+#SPELL LEVEL
+var magicBall2Level = 1
+var MagicBall2Cooldown = 2
+
+@onready var MagicBall2Timer = get_node("%MagicBall2Timer")
+
+var enemyInRange = []
+
+#PLAYER LEVEL
 var exp = 0
 var level = 1
 var expCollected = 0
@@ -31,8 +41,10 @@ func _ready():
 	timer_melee.one_shot = false
 	timer_melee.connect("timeout", on_Timer_timeout_Melee)
 	
-	add_child(timer)
-	add_child(timer_melee)
+	#add_child(timer)
+	#add_child(timer_melee)
+	
+	attack()
 	
 	update_score(0)
 
@@ -67,6 +79,13 @@ func slash():
 	
 	self.add_child(slash)  # přidá projektil do scény
 	
+
+func attack():
+	if (magicBall2Level > 0):
+		MagicBall2Timer.wait_time = MagicBall2Cooldown
+		if (MagicBall2Timer.is_stopped()):
+			MagicBall2Timer.start()
+
 func update_score(points):
 	score += points
 	$ScoreLabel.text = "Skóre: " + str(score)
@@ -112,3 +131,31 @@ func calculate_experience_cap():
 func set_exp_bar(set_value = 1, set_max_value = 100):
 	expBar.value = set_value
 	expBar.max_value = set_max_value
+
+
+func _on_magic_ball_2_timer_timeout():
+	var target = get_target()
+	if (target == null):
+		return
+	
+	var MagicBall2Attack = magicBall2.instantiate()
+	MagicBall2Attack.position = position
+	MagicBall2Attack.target = target
+	MagicBall2Attack.level = magicBall2Level
+	add_child(MagicBall2Attack)
+
+func get_target():
+	if (enemyInRange.size() > 0):
+		return enemyInRange.pick_random().global_position
+	else:
+		return null
+
+
+func _on_magic_ball_2_range_body_entered(body):
+	if not (enemyInRange.has(body)):
+		enemyInRange.append(body)
+
+
+func _on_magic_ball_2_range_body_exited(body):
+	if (enemyInRange.has(body)):
+		enemyInRange.erase(body)

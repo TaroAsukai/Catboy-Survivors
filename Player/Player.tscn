@@ -1,8 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://clc88cqsnslr1"]
+[gd_scene load_steps=13 format=3 uid="uid://clc88cqsnslr1"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_5ealv"]
 [ext_resource type="Texture2D" uid="uid://b42f7gq2w67xj" path="res://Player/player.png" id="1_d6bcn"]
-[ext_resource type="PackedScene" uid="uid://cadx20hc7p06f" path="res://Player/Bullets/Magic_Ball.tscn" id="3_pbqxm"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_dsffm"]
 animations = [{
@@ -49,6 +48,19 @@ border_color = Color(0.8, 0.8, 0.8, 0)
 font_color = Color(0, 0, 0, 1)
 outline_size = 3
 
+[sub_resource type="GDScript" id="GDScript_8qg8g"]
+script/source = "extends Area2D
+
+
+func _physics_process(delta):
+	var enemiesInRange = get_overlapping_bodies()
+	if (enemiesInRange.size() > 0):
+		var target_enemy = enemiesInRange.front()
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rouqy"]
+radius = 262.002
+
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 13
 script = ExtResource("1_5ealv")
@@ -62,8 +74,6 @@ visible = false
 shape = SubResource("RectangleShape2D_l5myx")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-
-[node name="Magic_Ball" parent="." instance=ExtResource("3_pbqxm")]
 
 [node name="ScoreLabel" type="Label" parent="."]
 offset_left = 383.0
@@ -116,5 +126,22 @@ offset_bottom = 28.0
 text = "Level: 1"
 label_settings = SubResource("LabelSettings_2ghdt")
 
+[node name="MagicBall2Range" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 8
+monitorable = false
+script = SubResource("GDScript_8qg8g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MagicBall2Range"]
+shape = SubResource("CircleShape2D_rouqy")
+
+[node name="Attack" type="Node2D" parent="."]
+
+[node name="MagicBall2Timer" type="Timer" parent="Attack"]
+unique_name_in_owner = true
+
 [connection signal="area_entered" from="CollectArea" to="." method="_on_collect_area_area_entered"]
 [connection signal="area_entered" from="GrabArea" to="." method="_on_grab_area_area_entered"]
+[connection signal="body_entered" from="MagicBall2Range" to="." method="_on_magic_ball_2_range_body_entered"]
+[connection signal="body_exited" from="MagicBall2Range" to="." method="_on_magic_ball_2_range_body_exited"]
+[connection signal="timeout" from="Attack/MagicBall2Timer" to="." method="_on_magic_ball_2_timer_timeout"]
