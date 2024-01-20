@@ -1,13 +1,14 @@
 extends CharacterBody2D
 
 
-
+var game = preload("res://MainScene/game.tscn")
 var projectile_scene = preload("res://Player/Bullets/Magic_Ball.tscn")
 var melee_scene = preload("res://Player/Melee/melee.tscn")
 var magicBall2 = preload("res://Player/Attack/MagicBall2/MagicBall2.tscn")
 var arrow = preload("res://Player/Attack/YonduArrow/yondu_arrow.tscn")
 var score = 0  # Skóre hráče
 var speed = 200
+var HP = 8
 
 #SPELLs
 @onready var MagicBall2Timer = get_node("%MagicBall2Timer")
@@ -46,13 +47,15 @@ func _ready():
 	timer_melee.autostart = true
 	timer_melee.one_shot = false
 	timer_melee.connect("timeout", on_Timer_timeout_Melee)
+	self.add_to_group("player")
 	
-	#add_child(timer)
-	#add_child(timer_melee)
+	add_child(timer)
+	add_child(timer_melee)
 	
 	attack()
 	
 	update_score(0)
+	update_HP(HP)
 
 
 func _physics_process(_delta):
@@ -176,3 +179,17 @@ func spawnArrow():
 		arrowSpawn.global_position = global_position
 		ArrowBase.add_child(arrowSpawn)
 		arrowSpawns -= 1
+		
+
+func get_attacked(dmg):
+	var curr_HP = HP
+	curr_HP -= dmg
+	update_HP(curr_HP)
+		
+func update_HP(HP_new):
+	HP = HP_new
+	var scene = get_parent()
+	if(HP < 1):
+		scene.game_over()
+	$HPLabel.text = "HP: " + str(HP)
+	
