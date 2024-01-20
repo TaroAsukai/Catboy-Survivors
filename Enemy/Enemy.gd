@@ -4,6 +4,7 @@ var speed = 80
 var HP = 3
 var player = null
 var can_hit = false
+var lookingLeft = true
 
 var expCrystal = preload("res://Experience/Experience.tscn")
 @export var exp = 1
@@ -26,6 +27,14 @@ func _physics_process(delta):
 	if player != null:
 		var direction = (player.global_position - global_position).normalized()
 		velocity = direction * speed
+		
+		if (velocity.x < 0 and lookingLeft == false):
+			$Sprite2D.flip_h = false
+			lookingLeft = true
+		elif (velocity.x > 0 and lookingLeft == true):
+			$Sprite2D.flip_h = true
+			lookingLeft = false
+		
 		move_and_slide()
 		for i in get_slide_collision_count():
 			collission = get_slide_collision(i).get_collider()

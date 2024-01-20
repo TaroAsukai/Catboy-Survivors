@@ -1,20 +1,24 @@
 extends CharacterBody2D
 
 
-
 var projectile_scene = preload("res://Player/Bullets/Magic_Ball.tscn")
 var melee_scene = preload("res://Player/Melee/melee.tscn")
 var magicBall2 = preload("res://Player/Attack/MagicBall2/MagicBall2.tscn")
 var arrow = preload("res://Player/Attack/YonduArrow/yondu_arrow.tscn")
 var score = 0  # Skóre hráče
 var speed = 200
-var HP = 8
+var HP = 20
+var lookingRight = true
 
 #SPELLs
 @onready var MagicBall2Timer = get_node("%MagicBall2Timer")
 @onready var ArrowBase = get_node("%ArrowBase")
+@onready var gameOverLabel = get_node("%GameOverLabel")
+@onready var restartButton = get_node("%Button")
+@onready var QuitButton = get_node("%Button2")
 
-var magicBall2Level = 0
+
+var magicBall2Level = 1
 var MagicBall2Cooldown = 2
 
 var arrowLevel = 1
@@ -62,8 +66,20 @@ func _ready():
 func _physics_process(_delta):
 	var direction = Input.get_vector("moveLeft", "moveRight", "moveUp", "moveDown")
 	velocity = direction * speed
+	if (velocity.x < 0 and lookingRight == true):
+		$AnimatedSprite2D.flip_h = true
+		lookingRight = false
+	elif (velocity.x > 0 and lookingRight == false):
+		$AnimatedSprite2D.flip_h = false
+		lookingRight = true
 	move_and_slide()
-	
+		
+	if (HP <= 0):
+		#IMPLEMENT GAME OVER
+		get_tree().paused = true
+		gameOverLabel.visible = true
+		restartButton.visible = true
+		QuitButton.visible = true
 
 func on_Timer_timeout_Player():
 	# Funkce pro střelbu projektilu
@@ -184,3 +200,12 @@ func spawnArrow():
 func update_HP(dmg):
 	HP -= dmg
 	$HPLabel.text = "HP: " + str(HP)
+
+
+func _on_button_2_pressed():
+	get_tree().quit()
+
+
+func _on_button_pressed():
+	get_tree().reload_current_scene()
+	get_tree().paused = false

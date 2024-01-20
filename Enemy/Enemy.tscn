@@ -1,20 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://cljaknh6fvg3h"]
+[gd_scene load_steps=4 format=3 uid="uid://cljaknh6fvg3h"]
 
 [ext_resource type="Script" path="res://Enemy/Enemy.gd" id="1_2ncrt"]
+[ext_resource type="Texture2D" uid="uid://ceckr27fqa3st" path="res://Enemy/slime.png" id="2_v33l8"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fj5rq"]
-size = Vector2(40, 40)
+[sub_resource type="CircleShape2D" id="CircleShape2D_a1t3j"]
+radius = 12.0
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
 collision_layer = 8
 collision_mask = 15
 script = ExtResource("1_2ncrt")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
-color = Color(0.156863, 0.176471, 0.462745, 1)
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_v33l8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(20, 20)
-shape = SubResource("RectangleShape2D_fj5rq")
+shape = SubResource("CircleShape2D_a1t3j")
