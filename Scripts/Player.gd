@@ -41,8 +41,8 @@ func _ready():
 	timer_melee.one_shot = false
 	timer_melee.connect("timeout", on_Timer_timeout_Melee)
 	
-	#add_child(timer)
-	#add_child(timer_melee)
+	add_child(timer)
+	add_child(timer_melee)
 	
 	attack()
 	
