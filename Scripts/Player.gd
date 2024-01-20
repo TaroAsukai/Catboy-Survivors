@@ -8,6 +8,7 @@ var magicBall2 = preload("res://Player/Attack/MagicBall2/MagicBall2.tscn")
 var arrow = preload("res://Player/Attack/YonduArrow/yondu_arrow.tscn")
 var score = 0  # Skóre hráče
 var speed = 200
+var HP = 8
 
 #SPELLs
 @onready var MagicBall2Timer = get_node("%MagicBall2Timer")
@@ -47,12 +48,15 @@ func _ready():
 	timer_melee.one_shot = false
 	timer_melee.connect("timeout", on_Timer_timeout_Melee)
 	
-	#add_child(timer)
-	#add_child(timer_melee)
+	add_child(timer)
+	add_child(timer_melee)
+	
+	self.add_to_group("player")
 	
 	attack()
 	
 	update_score(0)
+	update_HP(0)
 
 
 func _physics_process(_delta):
@@ -176,3 +180,7 @@ func spawnArrow():
 		arrowSpawn.global_position = global_position
 		ArrowBase.add_child(arrowSpawn)
 		arrowSpawns -= 1
+		
+func update_HP(dmg):
+	HP -= dmg
+	$HPLabel.text = "HP: " + str(HP)

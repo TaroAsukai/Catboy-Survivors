@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://clc88cqsnslr1"]
+[gd_scene load_steps=14 format=3 uid="uid://clc88cqsnslr1"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_5ealv"]
 [ext_resource type="Texture2D" uid="uid://b42f7gq2w67xj" path="res://Player/player.png" id="1_d6bcn"]
@@ -60,6 +60,10 @@ func _physics_process(delta):
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rouqy"]
 radius = 262.002
+
+[sub_resource type="LabelSettings" id="LabelSettings_qcmxm"]
+font_size = 32
+font_color = Color(0, 0, 1, 1)
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_mask = 13
@@ -142,6 +146,14 @@ unique_name_in_owner = true
 
 [node name="ArrowBase" type="Node2D" parent="Attack"]
 unique_name_in_owner = true
+
+[node name="HPLabel" type="Label" parent="."]
+offset_left = 379.0
+offset_top = -224.0
+offset_right = 432.0
+offset_bottom = -179.0
+text = "HP:"
+label_settings = SubResource("LabelSettings_qcmxm")
 
 [connection signal="area_entered" from="CollectArea" to="." method="_on_collect_area_area_entered"]
 [connection signal="area_entered" from="GrabArea" to="." method="_on_grab_area_area_entered"]
