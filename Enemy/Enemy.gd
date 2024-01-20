@@ -23,7 +23,7 @@ func _ready():
 	self.add_child(timer)
 
 func _physics_process(delta):
-	var collision = false
+	var collission = false
 	if player != null:
 		var direction = (player.global_position - global_position).normalized()
 		velocity = direction * speed
