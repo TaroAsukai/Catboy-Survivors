@@ -5,15 +5,21 @@ extends CharacterBody2D
 var projectile_scene = preload("res://Player/Bullets/Magic_Ball.tscn")
 var melee_scene = preload("res://Player/Melee/melee.tscn")
 var magicBall2 = preload("res://Player/Attack/MagicBall2/MagicBall2.tscn")
+var arrow = preload("res://Player/Attack/YonduArrow/yondu_arrow.tscn")
 var score = 0  # Skóre hráče
 var speed = 200
 
-#SPELL LEVEL
-var magicBall2Level = 1
+#SPELLs
+@onready var MagicBall2Timer = get_node("%MagicBall2Timer")
+@onready var ArrowBase = get_node("%ArrowBase")
+
+var magicBall2Level = 0
 var MagicBall2Cooldown = 2
 
-@onready var MagicBall2Timer = get_node("%MagicBall2Timer")
+var arrowLevel = 1
+var arrowCap = 1
 
+#ENEMIES
 var enemyInRange = []
 
 #PLAYER LEVEL
@@ -41,8 +47,8 @@ func _ready():
 	timer_melee.one_shot = false
 	timer_melee.connect("timeout", on_Timer_timeout_Melee)
 	
-	add_child(timer)
-	add_child(timer_melee)
+	#add_child(timer)
+	#add_child(timer_melee)
 	
 	attack()
 	
@@ -85,6 +91,9 @@ func attack():
 		MagicBall2Timer.wait_time = MagicBall2Cooldown
 		if (MagicBall2Timer.is_stopped()):
 			MagicBall2Timer.start()
+			
+	if (arrowLevel > 0):
+		spawnArrow()
 
 func update_score(points):
 	score += points
@@ -150,7 +159,6 @@ func get_target():
 	else:
 		return null
 
-
 func _on_magic_ball_2_range_body_entered(body):
 	if not (enemyInRange.has(body)):
 		enemyInRange.append(body)
@@ -159,3 +167,12 @@ func _on_magic_ball_2_range_body_entered(body):
 func _on_magic_ball_2_range_body_exited(body):
 	if (enemyInRange.has(body)):
 		enemyInRange.erase(body)
+
+func spawnArrow():
+	var numberOfArrows = ArrowBase.get_child_count()
+	var arrowSpawns = arrowCap - numberOfArrows
+	if (arrowSpawns > 0):
+		var arrowSpawn = arrow.instantiate()
+		arrowSpawn.global_position = global_position
+		ArrowBase.add_child(arrowSpawn)
+		arrowSpawns -= 1

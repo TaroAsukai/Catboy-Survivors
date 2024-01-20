@@ -61,7 +61,7 @@ func _physics_process(delta):
 [sub_resource type="CircleShape2D" id="CircleShape2D_rouqy"]
 radius = 262.002
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_mask = 13
 script = ExtResource("1_5ealv")
 
@@ -138,6 +138,9 @@ shape = SubResource("CircleShape2D_rouqy")
 [node name="Attack" type="Node2D" parent="."]
 
 [node name="MagicBall2Timer" type="Timer" parent="Attack"]
+unique_name_in_owner = true
+
+[node name="ArrowBase" type="Node2D" parent="Attack"]
 unique_name_in_owner = true
 
 [connection signal="area_entered" from="CollectArea" to="." method="_on_collect_area_area_entered"]
